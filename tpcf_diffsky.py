@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from pycorr import TwoPointCorrelationFunction, setup_logging
 from astropy.table import Table
-import matplotlib.pyplot as plt
 from cosmoprimo.cosmology import Cosmology
 
 
@@ -54,11 +53,7 @@ for i, los in enumerate(['x', 'y', 'z']):
     else:
         tpcf += tpcf_los
 
- # plot the multipoles
-tpcf = tpcf[::4]  # reduce radial binning by a factor of 4
-s, multipoles = tpcf(ells=(0, 2, 4), return_sep=True)
-fig, ax = plt.subplots()
-ax.plot(s, s**2*multipoles[0], label=r'$\ell=0$')
-ax.plot(s, s**2*multipoles[1], label=r'$\ell=2$')
-ax.legend()
-plt.savefig('test_diffsky.png', dpi=300)
+# save the results
+output_dir = f'/pscratch/sd/e/epaillas/emc/data_vectors/diffsky/tpcf/z0.5/'
+output_fn = Path(output_dir) / f'tpcf_galsampled_diffsky_mock_67120_fixedAmp_001_mass_conc_v0.3.npy'
+tpcf.save(output_fn)
